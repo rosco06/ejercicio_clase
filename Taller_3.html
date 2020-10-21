@@ -60,8 +60,7 @@
        <div class="col-2  "> <br><br>
         <button type="button" class="btn btn-outline-primary btn-lg btn-block" onClick="location.reload()" padding="20px 36px">LIMPIAR MAPA</button> <br>
         <button type="button" class="btn btn-outline-secondary btn-lg btn-block" onClick="añadir()">AÑADIR PUNTOS </button> <br>
-        <button type="button" class="btn btn-outline-secondary btn-lg btn-block" onClick="editar()">EDITAR PUNTOS </button> <br>
-        <button type="button" class="btn btn-outline-danger btn-lg btn-block" onClick="mapa_calor()">MAPA DE CALOR</button> 
+        <button type="button" class="btn btn-outline-secondary btn-lg btn-block" onClick="editar()">EDITAR PUNTOS </button> <br> 
         </div>
        <!-----------------------------MAPA------------------------------>  
         <div class="col-9 align-items-center">
@@ -157,7 +156,7 @@
 	var mymap = L.map('mapid',
 	{
 		minZoom: 10,
-        maxZoom: 20,
+        maxZoom: 18,
         maxBounds: bounds,
         maxBoundsViscosity: 1.0   
 	}).setView([3.445577778,-76.503375], 15).setMinZoom(14);
@@ -170,15 +169,6 @@
     basemaps.addTo(mymap);
 	Comunas.addTo(mymap);
 
-    L.latlngGraticule({
-                showLabel: true,
-                opacity:1,
-                color: 'black',
-                zoomInterval: [
-                    {start: 10, end: 13, interval: 10},
-                    {start: 14, end: 20, interval: 0.01}
-                ]
-            }).addTo(mymap);
 
     L.control.locate({
         icon:'fa fa-location-arrow',
@@ -325,50 +315,10 @@
 		marcador1.addTo(mymap);		
 	  	};
     
-    L.easyButton('<img src="buscar.png"  align="absmiddle" height="16px" >', function() 
-		{
-		
-            var marcador = L.marker([3.44973333,-76.49114444]);
-            marcador.bindPopup("Esta es tu casa!!!").openPopup();  
-			var magnifyingGlass = L.magnifyingGlass({
-			layers: [ marcador, Satelite ]
-            });
-			mymap.addLayer(magnifyingGlass);
 
-	  	},'Zoom a diferente mapa').addTo(mymap);	
     
-    L.easyButton('<img src="arrow.png"  align="absmiddle" height="16px" >', function() 
-	{
-	
-		var data = [{"from":[-76.49114444,3.44973333],"to":[-76.50758056,3.453847222],"labels":["CASA","PARQUE DE LA CAÑA"],"color":"#ff3a31"}];
-			
-		 data = data.map(item => { return {...item, value: parseInt(100)}});
 
-		 var migrationLayer = new L.migrationLayer({
-				map: mymap,
-				data: data,
-				pulseRadius:20,
-				pulseBorderWidth:3,
-				arcWidth:1,
-				arcLabel:true,
-				arcLabelFont:'15px sans-serif',
-				maxWidth:10
-				}
-		);
-		migrationLayer.addTo(mymap);
 
-	}, 'From-To').addTo(mymap);
-	
-	function mapa_calor() 
-		{	
-		
-		var heat = L.heatLayer([[marcador._layers[106]._latlng.lat,marcador._layers[106]._latlng.lng,10]],{radius: 25}).addTo(mymap);
-		
-		for (var i = 108; i<117; i++){
-
-		heat.addLatLng([marcador._layers[i]._latlng.lat,marcador._layers[i]._latlng.lng,10],{radius: 25});
-
-        };};
     console.log(marcador);
     L.control.betterscale({position:'bottomright'}).addTo(mymap);
 </script>
